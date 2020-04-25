@@ -1,0 +1,149 @@
+<%- include('partials/header'); -%>
+
+<div class="p-3 mb-2 bg-success text-white" style="  position: -webkit-sticky; position: sticky;top: 0;">
+  <strong>Currently Available:</strong>  &nbsp;&nbsp;&nbsp;&nbsp;
+  
+  Cash: <%= allBalances.cash%>  &nbsp;&nbsp;
+  Axis: <%= allBalances.axis%>  &nbsp;&nbsp;
+  HSBC: <%= allBalances.hsbc%>  &nbsp;&nbsp;
+  SBI: <%= allBalances.sbi%>    &nbsp;&nbsp;
+</div>
+    <div class="">            
+        <table class="table table-bordered" id="myTable">
+            <thead class="bg-primary">
+              <tr>
+                <th>Date <button class=" btn-primary" onclick="sortTable()">Sort</button></th>
+                <th>Amount</th>
+                <th>Payment Method  <button class="btn-primary" onclick="sortTable1()">Sort</button></th>
+                <th>Cash</th>
+                <th>Axis</th>
+                <th>HBSC</th>
+                <th>SBI</th>
+                <th>Paid for</th>
+              </tr>
+            </thead>
+          <tbody>
+            <% allRecord.forEach(function(record){ %>
+            <tr>
+              <td><%= String(record.date)%></td>
+              <td><%= record.paid%></td>
+              <td><%= record.from%></td>
+              <td><%= record.cash%></td>
+              <td><%= record.axis%></td>
+              <td><%= record.hsbc%></td>
+              <td><%= record.sbi%></td>
+              <td><%= record.paidto%></td>
+            </tr>
+            <%});%>
+          </tbody>
+        </table>
+      </div>
+      <div style="padding-bottom: 5%;">
+        <button type="button" class="btn btn-info" onclick="exportToExcel('myTable', 'user-data')">Export Table Data To Excel File</button>
+      </div>
+      <script>
+        function sortTable() {
+          var table, rows, switching, i, x, y, shouldSwitch;
+          table = document.getElementById("myTable");
+          switching = true;
+          /*Make a loop that will continue until
+          no switching has been done:*/
+          while (switching) {
+            //start by saying: no switching is done:
+            switching = false;
+            rows = table.rows;
+            /*Loop through all table rows (except the
+            first, which contains table headers):*/
+            for (i = 1; i < (rows.length - 1); i++) {
+              //start by saying there should be no switching:
+              shouldSwitch = false;
+              /*Get the two elements you want to compare,
+              one from current row and one from the next:*/
+              x = rows[i].getElementsByTagName("TD")[0];
+              y = rows[i + 1].getElementsByTagName("TD")[0];
+              //check if the two rows should switch place:
+              if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                //if so, mark as a switch and break the loop:
+                shouldSwitch = true;
+                break;
+              }
+            }
+            if (shouldSwitch) {
+              /*If a switch has been marked, make the switch
+              and mark that a switch has been done:*/
+              rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+              switching = true;
+            }
+          }
+        }
+
+        function sortTable1() {
+          var table, rows, switching, i, x, y, shouldSwitch;
+          table = document.getElementById("myTable");
+          switching = true;
+          /*Make a loop that will continue until
+          no switching has been done:*/
+          while (switching) {
+            //start by saying: no switching is done:
+            switching = false;
+            rows = table.rows;
+            /*Loop through all table rows (except the
+            first, which contains table headers):*/
+            for (i = 1; i < (rows.length - 1); i++) {
+              //start by saying there should be no switching:
+              shouldSwitch = false;
+              /*Get the two elements you want to compare,
+              one from current row and one from the next:*/
+              x = rows[i].getElementsByTagName("TD")[2];
+              y = rows[i + 1].getElementsByTagName("TD")[2];
+              //check if the two rows should switch place:
+              if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                //if so, mark as a switch and break the loop:
+                shouldSwitch = true;
+                break;
+              }
+            }
+            if (shouldSwitch) {
+              /*If a switch has been marked, make the switch
+              and mark that a switch has been done:*/
+              rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+              switching = true;
+            }
+          }
+        }
+        
+      function exportToExcel(tableID, filename = ''){
+          var downloadurl;
+          var dataFileType = 'application/vnd.ms-excel';
+          var tableSelect = document.getElementById(tableID);
+          var tableHTMLData = tableSelect.outerHTML.replace(/ /g, '%20');
+          
+          // Specify file name
+          filename = filename?filename+'.xls':'export_excel_data.xls';
+          
+          // Create download link element
+          downloadurl = document.createElement("a");
+          
+          document.body.appendChild(downloadurl);
+          
+          if(navigator.msSaveOrOpenBlob){
+              var blob = new Blob(['\ufeff', tableHTMLData], {
+                  type: dataFileType
+              });
+              navigator.msSaveOrOpenBlob( blob, filename);
+          }else{
+              // Create a link to the file
+              downloadurl.href = 'data:' + dataFileType + ', ' + tableHTMLData;
+          
+              // Setting the file name
+              downloadurl.download = filename;
+              
+              //triggering the function
+              downloadurl.click();
+          }
+      }
+
+      </script>
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <script src="src/jquery.table2excel.js"></script> 
+<%- include('partials/footer'); -%>

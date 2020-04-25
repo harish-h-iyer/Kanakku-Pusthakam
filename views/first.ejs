@@ -1,0 +1,48 @@
+<%- include('partials/header'); -%>
+<div class="row">
+
+    <div class="col-1"></div>
+    <div class="p-3 mb-2 text-white col-2" style>
+        <p class="bg-success">Cash: <%= allBalances.cash%></p>
+        <p class="bg-success">Axis: <%= allBalances.axis%></p>  
+        <p class="bg-success">HSBC: <%= allBalances.hsbc%></p>
+        <p class="bg-success">SBI: <%= allBalances.sbi%></p>
+    </div>
+    
+    <div class="col-9 container " style="width: 30%; padding-right: 30% ;">
+            <form action="/record" method="POST">
+                <div class="form-group row">
+                    <label for="date-input" class="col-3 col-form-label">Date</label>
+                    <div class="col-9">
+                      <input class="form-control" type="date" value="2020-04-15" name="date" id="date-input">
+                    </div>
+                </div>
+                <div class="form-group row">
+                <label for="Paid" class="col-3 col-form-label">Paid</label>
+                <div class="col-9">
+                    <input type="text" class="form-control" id="Paid" name="paid" placeholder="Amount">
+                </div>
+                </div>
+                <div class="form-group row">
+                <label for="exampleFormControlSelect1" class="col-3 col-form-label">From ?</label>
+                <div class="col-9">
+                    <select class="form-control" id="exampleFormControlSelect1" name="from">
+                        <option>Cash</option>
+                        <option>Axis</option>
+                        <option>HSBC</option>
+                        <option>SBI</option>
+                    </select>
+                </div>
+                </div>
+                <div class="form-group row">
+                    <label for="exampleFormControlInput2" class="col-3 col-form-label">Paid for?</label>
+                    <div class="col-9">
+                    <input type="text" class="form-control " id="exampleFormControlInput1" name="paidto" placeholder="Where ?">
+                    </div>    
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>    
+        <%- include('partials/footer'); -%>
+</div>
+
